@@ -27,20 +27,24 @@ void loop()
   new1 = analogRead(potpin1);
   Serial.print("Motor 1: ");
   Serial.print(new1);
-  if (new1 > 511)
+  if (new1 > 811)
   {
     current1++;
-  } else {
+  }
+  else if (new1 < 211)
+  {
     current1--;
   }
   servo1.write(current1);
   new2 = analogRead(potpin2);
   Serial.print("\tMotor 2: ");
   Serial.println(new2);
-  if (new2 > 511)
+  if (new2 > 811)
   {
     current2++;
-  } else {
+  }
+  else if (new2 < 211)
+  {
     current2--;
   }
   servo2.write(current2);
