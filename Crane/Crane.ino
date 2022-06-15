@@ -10,8 +10,8 @@ int inputpin1 = 0;
 int inputpin2 = 1;
 int motorPos1 = 90;
 int motorPos2 = 90;
-int new1;
-int new2;
+int new1 = 512;
+int new2 = 512;
 
 void setup()
 {
