@@ -8,8 +8,8 @@ Servo servo2;
 // potentiometer analog input pins
 int inputpin1 = 0;
 int inputpin2 = 1;
-int current1 = 90;
-int current2 = 90;
+int motorPos1 = 90;
+int motorPos2 = 90;
 int new1;
 int new2;
 
@@ -28,29 +28,29 @@ void loop()
   Serial.print("Motor 1: ");
   Serial.print(new1);
   Serial.print(" Position: ");
-  Serial.print(current1);
-  if (new1 > 811&&current1<=180)
+  Serial.print(motorPos1);
+  if (new1 > 811&&motorPos1<=129)
   {
-    current1++;
+    motorPos1++;
   }
-  else if (new1 < 211&&current1>=0)
+  else if (new1 < 211&&motorPos1>=39)
   {
-    current1--;
+    motorPos1--;
   }
-  servo1.write(current1);
+  servo1.write(motorPos1);
   new2 = analogRead(inputpin2);
   Serial.print("\tMotor 2: ");
   Serial.print(new2);
   Serial.print(" Position: ");
-  Serial.println(current2);
-  if (new2 > 811&&current2<=180)
+  Serial.println(motorPos2);
+  if (new2 > 811&&motorPos2>=0)
   {
-    current2++;
+    motorPos2--;
   }
-  else if (new2 < 211&&current2>=0)
+  else if (new2 < 211&&motorPos2<=180)
   {
-    current2--;
+    motorPos2++;
   }
-  servo2.write(current2);
+  servo2.write(motorPos2);
   delay(10);
 }
