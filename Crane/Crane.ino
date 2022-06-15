@@ -6,8 +6,8 @@ Servo servo1;
 Servo servo2;
 
 // potentiometer analog input pins
-int potpin1 = 0;
-int potpin2 = 1;
+int inputpin1 = 0;
+int inputpin2 = 1;
 int current1 = 90;
 int current2 = 90;
 int new1;
@@ -24,7 +24,7 @@ void setup()
 void loop()
 {
   // read and scale input from 0-1023 to 0-180
-  new1 = analogRead(potpin1);
+  new1 = analogRead(inputpin1);
   Serial.print("Motor 1: ");
   Serial.print(new1);
   Serial.print(" Position: ");
@@ -38,7 +38,7 @@ void loop()
     current1--;
   }
   servo1.write(current1);
-  new2 = analogRead(potpin2);
+  new2 = analogRead(inputpin2);
   Serial.print("\tMotor 2: ");
   Serial.print(new2);
   Serial.print(" Position: ");
