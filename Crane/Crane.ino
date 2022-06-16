@@ -5,21 +5,26 @@
 Servo motors[2];
 
 // potentiometer analog input pins
-int inputPins[2] = {0, 1};
 int motorPositions[2] = {90, 90};
 int joystickPositions[2] = {512, 512};
+int buttonIn = 2;
+int buttonState = 0;
+bool buttonPressed = false;
+int angle1;
+int angle2;
 
 void setup()
 {
   // attack servos to pins
   motors[0].attach(9);
   motors[1].attach(10);
+  pinMode(buttonIn, INPUT);
   // Serial.begin(9600);
 }
 
 void moveMotor(int motorNumber, int inputPin, int maxAngle, int minAngle)
 {
-  joystickPositions[motorNumber] = analogRead(inputPins[motorNumber]);
+  joystickPositions[motorNumber] = analogRead(inputPin);
   /*
   Serial.print("Motor " + String(motorNumber) + ": ");
   Serial.print(joystickPositions[motorNumber]);
@@ -38,6 +43,29 @@ void moveMotor(int motorNumber, int inputPin, int maxAngle, int minAngle)
     }
   }
   motors[motorNumber].write(motorPositions[motorNumber]);
+}
+
+void checkButton()
+{
+  if (digitalRead(buttonIn) == HIGH)
+  {
+    buttonState = 1;
+    if (!buttonPressed)
+    {
+      buttonPressed = true;
+      angle1 = motorPositions[0];
+      angle2 = motorPositions[1];
+    }
+    else
+    {
+      motors[0].write(angle1);
+      motors[1].write(angle2);
+    }
+  }
+  else
+  {
+    buttonState = 0;
+  }
 }
 
 void loop()
