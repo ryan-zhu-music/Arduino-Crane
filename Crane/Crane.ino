@@ -19,28 +19,36 @@ void setup()
   motors[0].attach(9);
   motors[1].attach(10);
   pinMode(buttonIn, INPUT);
-  // Serial.begin(9600);
+  Serial.begin(9600);
 }
 
-void moveMotor(int motorNumber, int inputPin, int maxAngle, int minAngle)
+void moveMotor(int motorNumber, int inputPin, int maxAngle, int minAngle, int direction)
 {
   joystickPositions[motorNumber] = analogRead(inputPin);
-  /*
+  
   Serial.print("Motor " + String(motorNumber) + ": ");
   Serial.print(joystickPositions[motorNumber]);
   Serial.print(" Position: ");
-  Serial.print(motorPositions[motorNumber]);
-  */
-  if (motorPositions[motorNumber] <= maxAngle && motorPositions >= minAngle)
+  Serial.print(String(motorPositions[motorNumber])+" ");
+  
+  if (motorPositions[motorNumber] <= maxAngle && motorPositions[motorNumber] >= minAngle)
   {
     if (joystickPositions[motorNumber] > 811)
     {
-      motorPositions[motorNumber]++;
+      motorPositions[motorNumber]+=direction;
     }
     else if (joystickPositions[motorNumber] < 211)
     {
-      motorPositions[motorNumber]--;
+      motorPositions[motorNumber]-=direction;
     }
+  } 
+  else if(motorPositions[motorNumber] > maxAngle)
+  {
+    motorPositions[motorNumber]--;
+  } 
+  else if(motorPositions[motorNumber] < minAngle)
+  {
+    motorPositions[motorNumber]++;
   }
   motors[motorNumber].write(motorPositions[motorNumber]);
 }
@@ -70,7 +78,10 @@ void checkButton()
 
 void loop()
 {
-  moveMotor(0, 0, 180, 0);
-  moveMotor(1, 1, 129, 39);
+  moveMotor(0, 0, 137, 0, 1);
+  moveMotor(1, 1, 129, 39, -1);
+  checkButton();
+  Serial.print("Button: "+String(buttonState)+" ");
+  Serial.println();
   delay(10);
 }
