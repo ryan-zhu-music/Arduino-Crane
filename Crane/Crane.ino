@@ -18,7 +18,7 @@ void setup()
   // attack servos to pins
   motors[0].attach(9);
   motors[1].attach(10);
-  pinMode(buttonIn, INPUT);
+  pinMode(buttonIn, INPUT_PULLUP);
   Serial.begin(9600);
 }
 
@@ -55,7 +55,7 @@ void moveMotor(int motorNumber, int inputPin, int maxAngle, int minAngle, int di
 
 void checkButton()
 {
-  if (digitalRead(buttonIn) == HIGH)
+  if (digitalRead(buttonIn) == LOW)
   {
     buttonState = 1;
     if (!buttonPressed)
@@ -66,6 +66,9 @@ void checkButton()
     }
     else
     {
+      motorPositions[0]=angle1;
+      motorPositions[1]=angle2;
+      delay(50);
       motors[0].write(angle1);
       motors[1].write(angle2);
     }
@@ -82,6 +85,7 @@ void loop()
   moveMotor(1, 1, 129, 39, -1);
   checkButton();
   Serial.print("Button: "+String(buttonState)+" ");
+  Serial.print("Angle 1: "+String(angle1)+" Angle 2: "+String(angle2));
   Serial.println();
   delay(10);
 }
