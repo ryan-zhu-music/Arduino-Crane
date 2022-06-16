@@ -7,7 +7,7 @@ Servo motors[2];
 // potentiometer analog input pins
 int inputPins[2] = {0, 1};
 int motorPositions[2] = {90, 90};
-int joystickPositions[2];
+int joystickPositions[2] = {512, 512};
 
 void setup()
 {
