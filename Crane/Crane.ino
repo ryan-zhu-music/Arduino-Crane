@@ -24,65 +24,65 @@ void setup()
   motors[0].attach(9);
   motors[1].attach(10);
   pinMode(buttonIn, INPUT_PULLUP);
-  //Serial.begin(9600);
+  // Serial.begin(9600);
 }
 
-//general function for moving the motor using the joystick
+// general function for moving the motor using the joystick
 void moveMotor(int motorNumber, int inputPin, int maxAngle, int minAngle, int direction)
 {
-  //read the joystick analog position from the input pin
+  // read the joystick analog position from the input pin
   joystickPositions[motorNumber] = analogRead(inputPin);
 
-  //check if the motor is not outside the range of movement for this motor
+  // check if the motor is not outside the range of movement for this motor
   if (motorPositions[motorNumber] <= maxAngle && motorPositions[motorNumber] >= minAngle)
   {
     if (joystickPositions[motorNumber] > 811)
     {
-      //move in the "positive direction"
-      motorPositions[motorNumber]+=direction;
+      // move in the "positive direction"
+      motorPositions[motorNumber] += direction;
     }
     else if (joystickPositions[motorNumber] < 211)
     {
-      //move in the "negative direction"
-      motorPositions[motorNumber]-=direction;
+      // move in the "negative direction"
+      motorPositions[motorNumber] -= direction;
     }
-  } 
-  //if the motor somehow finds itself outside of its range, move it back inside
-  else if(motorPositions[motorNumber] > maxAngle)
+  }
+  // if the motor somehow finds itself outside of its range, move it back inside
+  else if (motorPositions[motorNumber] > maxAngle)
   {
     motorPositions[motorNumber]--;
-  } 
-  else if(motorPositions[motorNumber] < minAngle)
+  }
+  else if (motorPositions[motorNumber] < minAngle)
   {
     motorPositions[motorNumber]++;
   }
-  //send the servo the target location
+  // send the servo the target location
   motors[motorNumber].write(motorPositions[motorNumber]);
 }
 
-//function for the button being pressed
+// function for the button being pressed
 void checkButton()
 {
-  //if the button is being pressed
+  // if the button is being pressed
   if (digitalRead(buttonIn) == LOW)
   {
     buttonState = 1;
-    //buttonPressed is a boolean that gets set to true the first time the button is pressed
-    //so if the button has not been pressed before, we save the position that the arm is currently in
+    // buttonPressed is a boolean that gets set to true the first time the button is pressed
+    // so if the button has not been pressed before, we save the position that the arm is currently in
     if (!buttonPressed)
     {
-      //set buttonPressed to true so we do not overwrite the values next time
+      // set buttonPressed to true so we do not overwrite the values next time
       buttonPressed = true;
-      //save the position into variables
+      // save the position into variables
       angle1 = motorPositions[0];
       angle2 = motorPositions[1];
     }
-    //if button has already been pressed before, that means we have a location to move to
+    // if button has already been pressed before, that means we have a location to move to
     else
     {
-      //get the target location and move there
-      motorPositions[1]=angle2;
-      motorPositions[0]=angle1;
+      // get the target location and move there
+      motorPositions[1] = angle2;
+      motorPositions[0] = angle1;
       motors[1].write(motorPositions[1]);
       delay(2000);
       motors[0].write(motorPositions[0]);
@@ -96,11 +96,11 @@ void checkButton()
 
 void loop()
 {
-  //main function, we move both motors sequentially
-  //if the joystick is not being pushed, the moveMotor function will not make the motor move
+  // main function, we move both motors sequentially
+  // if the joystick is not being pushed, the moveMotor function will not make the motor move
   moveMotor(0, 0, 137, 0, 1);
   moveMotor(1, 1, 129, 39, -1);
-  //check if the button is being pressed, and act accordingly
+  // check if the button is being pressed, and act accordingly
   checkButton();
   /*Serial.print("Button: "+String(buttonState)+" ");
   Serial.print("Angle 1: "+String(angle1)+" Angle 2: "+String(angle2));
