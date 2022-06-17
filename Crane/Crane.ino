@@ -69,7 +69,7 @@ void checkButton()
       motorPositions[1]=angle2;
       motorPositions[0]=angle1;
       motors[1].write(angle2);
-      delay(100);
+      delay(3000);
       motors[0].write(angle1);
     }
   }
