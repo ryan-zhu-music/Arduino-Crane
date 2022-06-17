@@ -1,4 +1,9 @@
-
+/* The crane consists of 2 motors, one controlling vertical movement and the other controlling horizontal movement
+ *  It is controlled by a joystick, with each axis controlling 1 motor.
+ *  When the joystick is pressed down, it remembers its current position, and subsequent presses bring it to the saved position
+ * The arm is monted on a corkboard platform
+ * Coded in C++ using Arduino
+ */
 #include <Servo.h>
 
 // create servo objects
@@ -10,8 +15,8 @@ int joystickPositions[2] = {512, 512};
 int buttonIn = 2;
 int buttonState = 0;
 bool buttonPressed = false;
-int angle1;
-int angle2;
+int angle1 = 0;
+int angle2 = 0;
 
 void setup()
 {
