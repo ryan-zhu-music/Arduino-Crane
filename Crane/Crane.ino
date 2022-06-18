@@ -5,13 +5,17 @@
  * Coded in C++ using Arduino
  */
 #include <Servo.h>
+#include <EEPROM.h>
 
 // create servo objects
 Servo motors[2];
 
 // potentiometer analog input pins
+int motorPins[2] = {9, 10};
 int motorPositions[2] = {90, 90};
 int joystickPositions[2] = {512, 512};
+int savedPositions[2] = {90, 90};
+
 int buttonIn = 2;
 int buttonState = 0;
 bool buttonPressed = false;
@@ -20,12 +24,40 @@ int angle2 = 0;
 
 void setup()
 {
-  // attach servos to pins
-  motors[0].attach(9);
-  motors[1].attach(10);
-  // setup joystick pushbutton pin
   pinMode(buttonIn, INPUT_PULLUP);
-  // Serial.begin(9600);
+  for (int i = 0; i < 2; i++)
+  {
+    motors[i].attach(motorPins[i]);
+    savedPositions[i] = EEPROM.read(i);
+  }
+  if (savedPositions[0] <= 180 && savedPositions[1] <= 180)
+  {
+    // move motors slowly to intial position
+    int delta[2] = {90 - savedPositions[0], 90 - savedPositions[1]};
+    for (int i = 1; i >= 0; i--)
+    {
+      for (int j = 0; j < abs(delta[i]); j++)
+      {
+        motors[i].write(savedPositions[i]);
+        if (savedPositions[i] > 90)
+        {
+          savedPositions[i]--;
+        }
+        else if (savedPositions[i] < 90)
+        {
+          savedPositions[i]++;
+        }
+        else
+        {
+          break;
+        }
+        delay(50);
+      }
+      delay(20);
+    }
+  }
+  motors[0].write(90);
+  motors[1].write(90);
 }
 
 // general function for moving the motor using the joystick
@@ -59,6 +91,8 @@ void moveMotor(int motorNumber, int inputPin, int maxAngle, int minAngle, int di
   }
   // move the servo the target location
   motors[motorNumber].write(motorPositions[motorNumber]);
+  // update EEPROM
+  EEPROM.update(motorNumber, motorPositions[motorNumber]);
 }
 
 // function for the joystick pushbutton
