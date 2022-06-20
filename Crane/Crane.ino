@@ -33,31 +33,27 @@ void setup()
   if (savedPositions[0] <= 180 && savedPositions[1] <= 180)
   {
     // move motors slowly to intial position
-    int delta[2] = {90 - savedPositions[0], 90 - savedPositions[1]};
-    for (int i = 1; i >= 0; i--)
+    for (int i = 0; i < 2; i++)
     {
-      for (int j = 0; j < abs(delta[i]); j++)
+      motors[i].write(savedPositions[i]);
+      while (savedPositions[i] != 90)
       {
-        motors[i].write(savedPositions[i]);
         if (savedPositions[i] > 90)
         {
           savedPositions[i]--;
         }
-        else if (savedPositions[i] < 90)
+        else
         {
           savedPositions[i]++;
         }
-        else
-        {
-          break;
-        }
+        motors[i].write(savedPositions[i]);
         delay(50);
       }
-      delay(20);
+      delay(1000);
     }
   }
-  motors[0].write(90);
-  motors[1].write(90);
+  // motors[0].write(90);
+  // motors[1].write(90);
 }
 
 // general function for moving the motor using the joystick
