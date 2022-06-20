@@ -14,7 +14,7 @@ Servo motors[2];
 int motorPins[2] = {9, 10};
 int motorPositions[2] = {90, 90};
 int joystickPositions[2] = {512, 512};
-int savedPositions[2];
+int savedPositions[2] = {90, 90};
 
 int buttonIn = 2;
 int buttonState = 0;
@@ -138,5 +138,5 @@ void loop()
   /*Serial.print("Button: " + String(buttonState) + " ");
   Serial.print("Angle 1: " + String(angle1) + " Angle 2: " + String(angle2));
   Serial.println();*/
-  delay(50);
+  delay(30);
 }
