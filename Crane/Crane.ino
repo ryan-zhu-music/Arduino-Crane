@@ -14,7 +14,7 @@ Servo motors[2];
 int motorPins[2] = {9, 10};
 int motorPositions[2] = {90, 90};
 int joystickPositions[2] = {512, 512};
-int savedPositions[2] = {90, 90};
+int savedPositions[2];
 
 int buttonIn = 2;
 int buttonState = 0;
@@ -27,15 +27,16 @@ void setup()
   pinMode(buttonIn, INPUT_PULLUP);
   for (int i = 0; i < 2; i++)
   {
-    motors[i].attach(motorPins[i]);
     savedPositions[i] = EEPROM.read(i);
+    motors[i].write(savedPositions[i]);
+    motors[i].attach(motorPins[i]);
   }
   if (savedPositions[0] <= 180 && savedPositions[1] <= 180)
   {
     // move motors slowly to intial position
-    for (int i = 0; i < 2; i++)
+    for (int i = 1; i >=0; i--)
     {
-      motors[i].write(savedPositions[i]);
+      //motors[i].write(savedPositions[i]);
       while (savedPositions[i] != 90)
       {
         if (savedPositions[i] > 90)
